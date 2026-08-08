@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GoldenSetCase",
+  "type": "object",
+  "description": "Schema defining a single test case for retrieval evaluation harness",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique test case identifier"
+    },
+    "question": {
+      "type": "string",
+      "description": "The student query or prompt"
+    },
+    "documentId": {
+      "type": "string",
+      "description": "The source document ID to scope retrieval"
+    },
+    "expectedChunkIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of ground-truth Chunk IDs containing the correct answer"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional commentary explaining the question type or evaluation intent"
+    }
+  },
+  "required": ["id", "question", "documentId", "expectedChunkIds"]
+}

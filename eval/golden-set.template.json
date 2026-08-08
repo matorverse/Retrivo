@@ -1,0 +1,142 @@
+[
+  {
+    "id": "case_001",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Factual lookup question — simple direct retrieval of a specific name, date, or explicit key fact."
+  },
+  {
+    "id": "case_002",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Definition question — asking for the formal definition or meaning of a primary course concept."
+  },
+  {
+    "id": "case_003",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Acronym expansion — asking what a technical abbreviation or acronym stands for."
+  },
+  {
+    "id": "case_004",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Formula & equation lookup — asking for a specific mathematical or statistical formula."
+  },
+  {
+    "id": "case_005",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Step-by-step procedure — asking for the sequence of steps in an algorithm, protocol, or method."
+  },
+  {
+    "id": "case_006",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Cross-section question spanning two chunks — a multi-part concept split across adjacent sections."
+  },
+  {
+    "id": "case_007",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Concept comparison — comparing or contrasting two related theories, models, or algorithms."
+  },
+  {
+    "id": "case_008",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Historical context & origin — asking who developed a principle or when an event occurred."
+  },
+  {
+    "id": "case_009",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Edge case / exception — asking about limitations, preconditions, or exception rules."
+  },
+  {
+    "id": "case_010",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Summary / high-level takeaway — asking for the overall thesis or core theme of a lecture."
+  },
+  {
+    "id": "case_011",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Example / application — asking for a practical real-world example used in the lecture."
+  },
+  {
+    "id": "case_012",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Troubleshooting & error handling — asking how a specific bug, error state, or failure is resolved."
+  },
+  {
+    "id": "case_013",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Diagram / table reference — asking about values or labels presented in a figure or table."
+  },
+  {
+    "id": "case_014",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Cause and effect relationship — asking why a particular phenomenon occurs based on lecture mechanisms."
+  },
+  {
+    "id": "case_015",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Terminology disambiguation — asking how two similar-sounding technical terms differ."
+  },
+  {
+    "id": "case_016",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Prerequisites & dependencies — asking what concepts must be mastered before a specific topic."
+  },
+  {
+    "id": "case_017",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Paraphrased query — asking a question using informal or conversational phrasing instead of formal textbook terms."
+  },
+  {
+    "id": "case_018",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Short keyword query — asking a brief 2-3 word keyword search to test dense vector retrieval."
+  },
+  {
+    "id": "case_019",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Long-tail descriptive question — asking a detailed 2-sentence scenario-based query."
+  },
+  {
+    "id": "case_020",
+    "question": "TODO_HUMAN_REVIEW",
+    "documentId": "TODO_HUMAN_REVIEW",
+    "expectedChunkIds": "TODO_HUMAN_REVIEW",
+    "notes": "Synthesis across sections — asking for a synthesis of ideas introduced in early vs late slides."
+  }
+]
