@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Base surfaces — warm beige, not stark white */
+  --color-bg: #FAF6EF;          /* page background */
+  --color-surface: #FFFFFF;      /* cards, panels */
+  --color-surface-muted: #F3EDE1; /* subtle inset areas, hover states */
+
+  /* Accents — soft sage green + peach */
+  --color-primary: #93AE8B;      /* muted sage — primary actions, active states */
+  --color-primary-hover: #7F9C76;
+  --color-primary-tint: #E6EEE2; /* pale sage bg for badges/highlights */
+
+  --color-secondary: #E8B894;    /* soft peach — secondary accents, warmth */
+  --color-secondary-tint: #FBEBDC;
+
+  /* Text — warm charcoal, never pure black */
+  --color-text-primary: #33312B;
+  --color-text-secondary: #74705F;
+  --color-text-muted: #A19C8A;
+
+  /* Borders */
+  --color-border: #E6DFCF;
+  --color-border-strong: #D6CBAE;
+
+  /* Status — muted, not alarming */
+  --color-success: #7A9B6E;      /* sage-leaning green */
+  --color-success-tint: #E9F1E4;
+  --color-warning: #D8A65C;      /* muted amber/peach */
+  --color-warning-tint: #F7ECDA;
+  --color-danger: #C97F6E;       /* soft terracotta, not fire-engine red */
+  --color-danger-tint: #F5E5E0;
+}
+
+body {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Calm card container */
+.calm-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.calm-card-hover {
+  transition: background-color 180ms ease-out, border-color 180ms ease-out;
+}
+
+.calm-card-hover:hover {
+  background-color: var(--color-surface-muted);
+  border-color: var(--color-border-strong);
+}
+
+/* Soft pulse for quiet loading states */
+@keyframes calm-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-calm-pulse {
+  animation: calm-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

@@ -1,0 +1,117 @@
+"use client";
+
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { BookOpen, LogIn, AlertCircle } from "lucide-react";
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        setError("Invalid email or password.");
+      } else {
+        router.push("/dashboard");
+        router.refresh();
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
+      <div className="w-full max-w-md calm-card p-8 space-y-6">
+        <div className="text-center space-y-2">
+          <div className="inline-flex p-2.5 rounded-calm-sm bg-calm-primary-tint text-calm-primary mb-1">
+            <BookOpen className="w-5 h-5 stroke-[1.75]" />
+          </div>
+          <h1 className="font-heading text-2xl font-bold text-calm-text">
+            Welcome back
+          </h1>
+          <p className="text-xs text-calm-text-muted">
+            Log in to access your AI Study Companion
+          </p>
+        </div>
+
+        {error && (
+          <div className="p-3 rounded-calm-sm bg-calm-danger-tint border border-calm-danger/30 text-calm-danger text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 stroke-[1.75]" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-calm-text">
+              Email address
+            </label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="student@university.edu"
+              className="w-full px-3.5 py-2 rounded-calm-sm bg-calm-surface border border-calm-border text-sm text-calm-text placeholder-calm-text-subtle focus:outline-none focus:border-calm-primary transition-colors"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-calm-text">
+              Password
+            </label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full px-3.5 py-2 rounded-calm-sm bg-calm-surface border border-calm-border text-sm text-calm-text placeholder-calm-text-subtle focus:outline-none focus:border-calm-primary transition-colors"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-2.5 px-4 rounded-calm-sm bg-calm-primary hover:bg-calm-primary-hover text-white font-medium text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <>
+                <LogIn className="w-4 h-4 stroke-[1.75]" />
+                Log in
+              </>
+            )}
+          </button>
+        </form>
+
+        <p className="text-center text-xs text-calm-text-muted">
+          Don&apos;t have an account yet?{" "}
+          <Link href="/signup" className="text-calm-primary hover:underline font-medium">
+            Create an account
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}

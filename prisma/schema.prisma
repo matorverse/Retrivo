@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String     @id @default(cuid())
+  email          String     @unique
+  hashedPassword String?
+  name           String?
+  createdAt      DateTime   @default(now())
+  documents      Document[]
+}
+
+model Document {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename   String
+  storageUrl String
+  status     String   @default("pending") // pending | processing | ready | failed
+  createdAt  DateTime @default(now())
+  chunks     Chunk[]
+}
+
+model Chunk {
+  id         String                       @id @default(cuid())
+  documentId String
+  document   Document                     @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  content    String
+  embedding  Unsupported("vector(1536)")? // pgvector column (1536 dimensions for OpenAI/compatible embeddings)
+  chunkIndex Int
+}
