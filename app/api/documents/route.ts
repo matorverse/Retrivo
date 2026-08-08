@@ -110,20 +110,25 @@ export async function POST(req: Request) {
           throw new Error("Failed to generate text chunks from document.");
         }
 
-        // Generate vector embeddings and save chunks in database
-        for (const chunk of textChunks) {
-          const embeddingRes = await generateEmbedding(chunk.content);
+        // Generate vector embeddings and save chunks in parallelized batches (concurrency of 5)
+        const BATCH_SIZE = 5;
+        for (let i = 0; i < textChunks.length; i += BATCH_SIZE) {
+          const batch = textChunks.slice(i, i + BATCH_SIZE);
+          await Promise.all(
+            batch.map(async (chunk) => {
+              const embeddingRes = await generateEmbedding(chunk.content);
+              const vectorSql = `[${embeddingRes.embedding.join(",")}]`;
+              const chunkId = `chunk_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
-          // Format vector string for pgvector SQL insert / Prisma unsupported type
-          const vectorSql = `[${embeddingRes.embedding.join(",")}]`;
-
-          await db.$executeRawUnsafe(
-            `INSERT INTO "Chunk" ("id", "documentId", "content", "embedding", "chunkIndex") VALUES ($1, $2, $3, $4::vector, $5)`,
-            `chunk_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-            document.id,
-            chunk.content,
-            vectorSql,
-            chunk.chunkIndex
+              await db.$executeRawUnsafe(
+                `INSERT INTO "Chunk" ("id", "documentId", "content", "embedding", "chunkIndex") VALUES ($1, $2, $3, $4::vector, $5)`,
+                chunkId,
+                document.id,
+                chunk.content,
+                vectorSql,
+                chunk.chunkIndex
+              );
+            })
           );
         }
 

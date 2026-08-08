@@ -26,6 +26,8 @@ model Document {
   status     String   @default("pending") // pending | processing | ready | failed
   createdAt  DateTime @default(now())
   chunks     Chunk[]
+
+  @@index([userId, createdAt])
 }
 
 model Chunk {
@@ -35,4 +37,6 @@ model Chunk {
   content    String
   embedding  Unsupported("vector(1536)")? // pgvector column (1536 dimensions for OpenAI/compatible embeddings)
   chunkIndex Int
+
+  @@index([documentId, chunkIndex])
 }

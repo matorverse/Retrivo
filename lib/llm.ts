@@ -101,10 +101,24 @@ export function chunkDocumentText(
   return chunks;
 }
 
+// In-memory LRU embedding cache (max 200 items) to minimize OpenAI API latency and cost
+const embeddingCache = new Map<string, EmbeddingResult>();
+const MAX_CACHE_SIZE = 200;
+
 /**
  * Generate 1536-dimensional vector embedding for text
  */
 export async function generateEmbedding(text: string): Promise<EmbeddingResult> {
+  const cacheKey = text.slice(0, 500).trim();
+
+  if (embeddingCache.has(cacheKey)) {
+    const cached = embeddingCache.get(cacheKey)!;
+    // Move to end (most recently used)
+    embeddingCache.delete(cacheKey);
+    embeddingCache.set(cacheKey, cached);
+    return cached;
+  }
+
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (apiKey) {
@@ -124,7 +138,14 @@ export async function generateEmbedding(text: string): Promise<EmbeddingResult> 
       if (response.ok) {
         const data = await response.json();
         const embedding = data.data[0].embedding;
-        return { embedding, dimensions: embedding.length };
+        const result: EmbeddingResult = { embedding, dimensions: embedding.length };
+
+        if (embeddingCache.size >= MAX_CACHE_SIZE) {
+          const oldestKey = embeddingCache.keys().next().value;
+          if (oldestKey) embeddingCache.delete(oldestKey);
+        }
+        embeddingCache.set(cacheKey, result);
+        return result;
       }
     } catch (err) {
       console.error("OpenAI embedding API call failed, falling back to local vector generator:", err);
@@ -143,7 +164,15 @@ export async function generateEmbedding(text: string): Promise<EmbeddingResult> 
     return Math.round(val * 10000) / 10000;
   });
 
-  return { embedding: stubVector, dimensions: 1536 };
+  const stubResult: EmbeddingResult = { embedding: stubVector, dimensions: 1536 };
+
+  if (embeddingCache.size >= MAX_CACHE_SIZE) {
+    const oldestKey = embeddingCache.keys().next().value;
+    if (oldestKey) embeddingCache.delete(oldestKey);
+  }
+  embeddingCache.set(cacheKey, stubResult);
+
+  return stubResult;
 }
 
 /**

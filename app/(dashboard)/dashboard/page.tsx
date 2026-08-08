@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import {
@@ -135,33 +135,31 @@ export default function DashboardPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this document?")) return;
 
+    // Optimistic UI update: Remove document immediately from local state
+    const previousDocs = [...documents];
+    setDocuments((prev) => prev.filter((doc) => doc.id !== id));
+
     try {
       const res = await fetch(`/api/documents/${id}`, {
         method: "DELETE",
       });
 
-      if (res.ok) {
-        setDocuments((prev) => prev.filter((doc) => doc.id !== id));
+      if (!res.ok) {
+        // Rollback state if server deletion failed
+        setDocuments(previousDocs);
+        alert("Failed to delete document on server.");
       }
     } catch (err) {
       console.error("Failed to delete document:", err);
+      setDocuments(previousDocs);
     }
   };
 
-  if (status === "loading") {
-    return (
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
-        <div className="flex items-center gap-2.5 text-calm-text-muted text-sm">
-          <RefreshCw className="w-4 h-4 animate-spin text-calm-primary stroke-[1.75]" />
-          <span>Loading session...</span>
-        </div>
-      </div>
+  const filteredDocs = useMemo(() => {
+    return documents.filter((doc) =>
+      doc.filename.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }
-
-  const filteredDocs = documents.filter((doc) =>
-    doc.filename.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  }, [documents, searchQuery]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
