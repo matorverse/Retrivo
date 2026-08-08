@@ -134,10 +134,14 @@ export async function POST(req: Request) {
         });
       } catch (procError) {
         console.error(`Document processing failed for ${document.id}:`, procError);
-        await db.document.update({
-          where: { id: document.id },
-          data: { status: "failed" },
-        });
+        try {
+          await db.document.update({
+            where: { id: document.id },
+            data: { status: "failed" },
+          });
+        } catch (updateErr) {
+          console.error(`Failed to set document status 'failed' for ${document.id}:`, updateErr);
+        }
       }
     })();
 

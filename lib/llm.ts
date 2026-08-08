@@ -64,6 +64,22 @@ export function chunkDocumentText(
     const trimmedPara = para.trim();
     if (!trimmedPara) continue;
 
+    // If single paragraph is larger than chunkSize, slice it into sub-chunks
+    if (trimmedPara.length > chunkSize) {
+      if (currentChunk) {
+        chunks.push({ content: currentChunk, chunkIndex: chunkIndex++ });
+        currentChunk = "";
+      }
+
+      let subOffset = 0;
+      while (subOffset < trimmedPara.length) {
+        const subChunk = trimmedPara.slice(subOffset, subOffset + chunkSize);
+        chunks.push({ content: subChunk, chunkIndex: chunkIndex++ });
+        subOffset += chunkSize - overlap;
+      }
+      continue;
+    }
+
     if ((currentChunk + "\n\n" + trimmedPara).length <= chunkSize) {
       currentChunk = currentChunk ? `${currentChunk}\n\n${trimmedPara}` : trimmedPara;
     } else {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Send, Bot, User, BookOpen, FileText, Sparkles, RefreshCw, AlertCircle } from "lucide-react";
 
 interface Citation {
@@ -23,6 +23,7 @@ interface ChatInterfaceProps {
 }
 
 export function ChatInterface({ documentId, documentName }: ChatInterfaceProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -36,6 +37,14 @@ export function ChatInterface({ documentId, documentName }: ChatInterfaceProps) 
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -202,6 +211,7 @@ export function ChatInterface({ documentId, documentName }: ChatInterfaceProps) 
             <span>{error}</span>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Bar */}

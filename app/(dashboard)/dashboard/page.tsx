@@ -68,15 +68,23 @@ export default function DashboardPage() {
   useEffect(() => {
     if (session) {
       fetchDocuments();
-      const interval = setInterval(fetchDocuments, 3000);
-      return () => clearInterval(interval);
+      // Only set fast polling interval if any document is processing or pending
+      const hasActiveProcessing = documents.some(
+        (d) => d.status === "pending" || d.status === "processing"
+      );
+      if (hasActiveProcessing) {
+        const interval = setInterval(fetchDocuments, 3000);
+        return () => clearInterval(interval);
+      }
     }
-  }, [session, fetchDocuments]);
+  }, [session, fetchDocuments, documents]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.type !== "application/pdf") {
+      const isPdfType = file.type === "application/pdf" || file.type === "application/x-pdf";
+      const isPdfExt = file.name.toLowerCase().endsWith(".pdf");
+      if (!isPdfType && !isPdfExt) {
         setUploadError("Only PDF files are supported.");
         setSelectedFile(null);
         return;

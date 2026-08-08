@@ -27,6 +27,7 @@ export async function POST(req: Request) {
     }
 
     const { query, documentId } = validated.data;
+    const targetDocId = documentId && documentId.trim() !== "" ? documentId : undefined;
 
     // 1. Embed query
     const queryEmbeddingRes = await generateEmbedding(query);
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
       session.user.id,
       queryEmbeddingRes.embedding,
       5,
-      documentId
+      targetDocId
     );
 
     // 3. Generate cited answer with system prompt enforcing source citations

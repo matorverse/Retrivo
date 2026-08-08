@@ -41,16 +41,26 @@ export async function GET(
     // Generate practice quiz questions based on document chunks
     const questions = document.chunks.slice(0, 5).map((chunk, idx) => {
       const snippet = chunk.content.slice(0, 100).trim();
+      const rawOptions = [
+        `Key concept regarding "${snippet.slice(0, 45)}..."`,
+        `Alternative theory unrelated to ${document.filename}`,
+        `General background overview of peripheral topics`,
+        `Methodology details outside the core scope`,
+      ];
+
+      // Deterministically shuffle option indices based on chunk index & question index
+      const targetCorrectIdx = (chunk.chunkIndex + idx) % 4;
+      const shuffledOptions = [...rawOptions];
+      // Swap original correct option (index 0) into targetCorrectIdx
+      const temp = shuffledOptions[0];
+      shuffledOptions[0] = shuffledOptions[targetCorrectIdx];
+      shuffledOptions[targetCorrectIdx] = temp;
+
       return {
         id: `q_${chunk.id}_${idx}`,
         question: `Based on chunk #${chunk.chunkIndex} of ${document.filename}: What key concept is discussed in this section?`,
-        options: [
-          `Key concept regarding "${snippet.slice(0, 45)}..."`,
-          `Alternative theory unrelated to ${document.filename}`,
-          `General background overview of peripheral topics`,
-          `Methodology details outside the core scope`,
-        ],
-        correctIndex: 0,
+        options: shuffledOptions,
+        correctIndex: targetCorrectIdx,
         explanation: `This question tests comprehension of chunk #${chunk.chunkIndex}: "${snippet}..."`,
         chunkIndex: chunk.chunkIndex,
         filename: document.filename,
